@@ -1,16 +1,18 @@
 use clap::Parser;
 use colored::Colorize;
 
+use crate::commands::Commands;
 use crate::commands::keyspace_command::new_keyspace;
 
 mod connection;
 mod commands;
 
-#[derive(Parser, Debug)]
+#[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
-    #[arg(short, long, default_value = "")]
-    action: String,
+    /// Action to perform
+    #[arg(value_enum)]
+    command: Option<Commands>,
 
     /// Scylla Host
     #[arg(long, default_value = "localhost:9042")]
@@ -30,21 +32,18 @@ pub struct Args {
     timeout: u64,
 }
 
+
 #[tokio::main]
 async fn main() {
     let args = Args::parse();
     welcome(&args);
 
     let connection = connection::setup_connection(&args).await;
-    let action = args.action.as_str();
 
-    println!("{} {}", "Action: ".cyan(), action.magenta());
+    let action = args.command.unwrap();
+    println!("{} {}", "Action: ".cyan(), &action.to_string().magenta());
     match action {
-        "keyspace" => new_keyspace(connection, &args.keyspace).await,
-        _ => {
-            println!("Invalid action");
-            std::process::exit(1);
-        }
+        Commands::Keyspace => new_keyspace(connection, &args.keyspace).await,
     }
 }
 

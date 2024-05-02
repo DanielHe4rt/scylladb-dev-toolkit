@@ -35,9 +35,7 @@ async fn main() {
     let args = Args::parse();
     welcome(&args);
 
-
     let connection = connection::setup_connection(&args).await;
-
     let action = args.action.as_str();
 
     println!("{} {}", "Action: ".cyan(), action.magenta());
@@ -57,9 +55,8 @@ fn welcome(args: &Args) {
     let password = if args.password.is_empty() { "(default)" } else { &args.password };
 
     println!("{}", "ScyllaDB Toolkit by @danielhe4rt".cyan());
-    println!("{} {}", "Host:".cyan(), &args.host);
+    println!("{} {}", "Host:".cyan(), host_port_stripped.magenta());
     println!("{} {}", "User:".cyan(), user.magenta());
     println!("{} {}", "User:".cyan(), password.magenta());
     println!("{} {}", "Keyspace:".cyan(), &args.keyspace.magenta());
-
 }

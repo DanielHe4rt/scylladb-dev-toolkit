@@ -28,7 +28,7 @@ pub struct Args {
     #[arg(short, long, default_value = "")]
     password: String,
 
-    #[arg(short, long, default_value_t = 30)]
+    #[arg(short, long, default_value_t = 3)]
     timeout: u64,
 }
 

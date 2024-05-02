@@ -1,7 +1,7 @@
 use clap::Parser;
 use colored::Colorize;
 
-use crate::commands::Commands;
+use crate::commands::Command;
 use crate::commands::keyspace_command::new_keyspace;
 
 mod connection;
@@ -11,16 +11,12 @@ mod commands;
 #[command(author, version, about, long_about = None)]
 pub struct Args {
     /// Action to perform
-    #[arg(value_enum)]
-    command: Option<Commands>,
+    #[command(subcommand)]
+    command: Option<Command>,
 
     /// Scylla Host
     #[arg(long, default_value = "localhost:9042")]
     host: String,
-
-    /// Keyspace
-    #[arg(short, long, default_value = "mykeyspace")]
-    keyspace: String,
 
     #[arg(short, long, default_value = "")]
     user: String,
@@ -40,10 +36,15 @@ async fn main() {
 
     let connection = connection::setup_connection(&args).await;
 
-    let action = args.command.unwrap();
-    println!("{} {}", "Action: ".cyan(), &action.to_string().magenta());
-    match action {
-        Commands::Keyspace => new_keyspace(connection, &args.keyspace).await,
+
+    match args.command {
+        Some(Command::Keyspace { keyspace, replication_factor, drop }) => {
+            println!("{} {}", "Action: ".cyan(), "New Keyspace");
+            new_keyspace(connection, keyspace, replication_factor, drop).await;
+        }
+        _ => {
+            println!("{}", "No command provided".red());
+        }
     }
 }
 
@@ -57,5 +58,4 @@ fn welcome(args: &Args) {
     println!("{} {}", "Host:".cyan(), host_port_stripped.magenta());
     println!("{} {}", "User:".cyan(), user.magenta());
     println!("{} {}", "User:".cyan(), password.magenta());
-    println!("{} {}", "Keyspace:".cyan(), &args.keyspace.magenta());
 }

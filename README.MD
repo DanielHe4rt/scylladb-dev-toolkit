@@ -12,7 +12,7 @@ Select an action from the list below and run the command on the terminal:
 * multi-dc (WIP)
 
 ````bash
-toolkit --action keyspace --keyspace he4rtless_ks
+toolkit keyspace --keyspace he4rtless_ks
 ````
 
 ## CLI Arguments

@@ -1,7 +1,7 @@
 use colored::Colorize;
 use scylla::Session;
 
-pub async fn new_keyspace(
+pub async fn handle(
     session: Session,
     keyspace: String,
     replication_factor: u8,

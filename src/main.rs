@@ -1,8 +1,7 @@
 use clap::Parser;
 use colored::Colorize;
 
-use crate::commands::Command;
-use crate::commands::keyspace_command::new_keyspace;
+use crate::commands::{Command, keyspace_command, setup_multi_dc_command};
 
 mod connection;
 mod commands;
@@ -40,8 +39,13 @@ async fn main() {
     match args.command {
         Some(Command::Keyspace { keyspace, replication_factor, drop }) => {
             println!("{} {}", "Action: ".cyan(), "New Keyspace");
-            new_keyspace(connection, keyspace, replication_factor, drop).await;
-        }
+            keyspace_command::handle(connection, keyspace, replication_factor, drop).await;
+        },
+        Some(Command::MultiDC { replication_factor, dcs}) => {
+            println!("{} {}", "Action: ".cyan(), "Multi DC Setup");
+            setup_multi_dc_command::handle(connection, dcs, replication_factor).await;
+        },
+
         _ => {
             println!("{}", "No command provided".red());
         }

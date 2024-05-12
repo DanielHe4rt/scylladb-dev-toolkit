@@ -28,6 +28,9 @@ pub enum Command {
 
         #[clap(short, long, value_parser, num_args = 1.., value_delimiter = ',', default_value = "DC1,DC2")]
         dcs: Vec<String>,
+
+        #[arg(short, long, default_value = "mykeyspace")]
+        keyspace: String,
     },
 
 }

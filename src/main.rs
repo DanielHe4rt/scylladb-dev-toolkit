@@ -41,9 +41,9 @@ async fn main() {
             println!("{} {}", "Action: ".cyan(), "New Keyspace");
             keyspace_command::handle(connection, keyspace, replication_factor, drop).await;
         },
-        Some(Command::MultiDC { replication_factor, dcs}) => {
+        Some(Command::MultiDC { replication_factor, dcs, keyspace}) => {
             println!("{} {}", "Action: ".cyan(), "Multi DC Setup");
-            setup_multi_dc_command::handle(connection, dcs, replication_factor).await;
+            setup_multi_dc_command::handle(connection, keyspace, dcs, replication_factor).await;
         },
 
         _ => {

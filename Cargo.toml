@@ -3,6 +3,7 @@ name = "scylladb-dev-toolkit"
 version = "0.1.0"
 edition = "2021"
 description = "Developer Toolkit for ScyllaDB Rust Driver."
+repository = "https://github.com/DanielHe4rt/scylladb-dev-toolkit"
 keywords = ["database", "scylla", "cql", "toolkit"]
 categories = ["database"]
 license = "MIT OR Apache-2.0"
@@ -13,7 +14,7 @@ readme = "README.md"
 [dependencies]
 clap = { version = "4.5.4", features = ["derive"] }
 colored = "2.1.0"
-scylla = "0.12.0"
+scylla = "0.13.1"
 tokio = { version = "1.37.0", features = ["full"] }
 
 [[bin]]

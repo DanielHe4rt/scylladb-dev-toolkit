@@ -1,7 +1,12 @@
 [package]
-name = "toolkit"
+name = "scylladb-dev-toolkit"
 version = "0.1.0"
 edition = "2021"
+description = "Developer Toolkit for ScyllaDB Rust Driver."
+keywords = ["database", "scylla", "cql", "toolkit"]
+categories = ["database"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

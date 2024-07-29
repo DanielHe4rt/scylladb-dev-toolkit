@@ -1,9 +1,9 @@
 use colored::Colorize;
 use scylla::{Session, SessionBuilder};
 
-use crate::Args;
+use crate::commands::ConnectionConfig;
 
-pub async fn setup_connection(args: &Args) -> Session {
+pub async fn setup_connection(args: &ConnectionConfig) -> Session {
     println!("{}", "-".repeat(50));
     println!("{}", "Setting up connection...".green());
     let session = SessionBuilder::new()

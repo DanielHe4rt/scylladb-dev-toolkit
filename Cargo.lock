@@ -806,6 +806,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "scylladb-dev-toolkit"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "colored",
+ "scylla",
+ "tokio",
+]
+
+[[package]]
 name = "signal-hook-registry"
 version = "1.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -969,16 +979,6 @@ dependencies = [
  "indexmap",
  "toml_datetime",
  "winnow",
-]
-
-[[package]]
-name = "toolkit"
-version = "0.1.0"
-dependencies = [
- "clap",
- "colored",
- "scylla",
- "tokio",
 ]
 
 [[package]]

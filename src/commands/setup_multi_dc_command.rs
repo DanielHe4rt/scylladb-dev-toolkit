@@ -14,7 +14,7 @@ pub async fn handle(
         rf.push_str(dc.as_str());
     }
     rf.pop();
-    rf.push_str("}");
+    rf.push('}');
 
     let keyspace = keyspace.as_str();
     let keyspace_query = format!("ALTER KEYSPACE {} WITH replication = ", keyspace);
@@ -23,7 +23,7 @@ pub async fn handle(
         ("system_auth", "ALTER KEYSPACE system_auth WITH replication = "),
         ("system_distributed", "ALTER KEYSPACE system_distributed WITH replication = "),
         ("system_traces", "ALTER KEYSPACE system_traces WITH replication = "),
-        (&keyspace, keyspace_query.as_str()),
+        (keyspace, keyspace_query.as_str()),
     ];
 
     for (table, query) in queries {

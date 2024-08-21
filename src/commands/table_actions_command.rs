@@ -15,22 +15,12 @@ pub async fn handle(
 
     let keyspace_specs = keyspace_info.get(&keyspace).expect("Keyspace not found");
 
-    println!("Keyspace: {}", keyspace);
-    for table in keyspace_specs.tables.iter() {
-        println!("  - T: {}", table.0);
-    }
-    for table in keyspace_specs.views.iter() {
-        println!("  - MV: {}", table.0);
-    }
-
     if action.is_some() || suffix.is_some() {
-        list_actions();
         execute_actions(session, keyspace, keyspace_specs, action.unwrap(), suffix.unwrap().as_str()).await?;
         return Ok(());
     }
 
-    list_actions();
-
+    list_actions(keyspace.clone(), keyspace_specs);
     stdin.read_line(&mut buffer)?;
 
     let choice = buffer.trim().parse::<u8>()?;
@@ -48,7 +38,15 @@ pub async fn handle(
     Ok(())
 }
 
-fn list_actions() {
+fn list_actions(keyspace: String, keyspace_specs: &Keyspace) {
+    println!("Keyspace: {}", keyspace);
+    for table in keyspace_specs.tables.iter() {
+        println!("  - T: {}", table.0);
+    }
+    for table in keyspace_specs.views.iter() {
+        println!("  - MV: {}", table.0);
+    }
+
     println!("What do you want to do?");
     println!(" > 1. Truncate Tables");
     println!(" > 2. Drop Tables");
@@ -66,9 +64,9 @@ async fn execute_actions(session: Session, keyspace: String, keyspace_specs: &Ke
 
     match choice {
         1 => {
-            for (operation, table_name) in tables {
+            for (_, table_name) in tables {
                 if table_name.ends_with(suffix) {
-                    let query = format!("TRUNCATE {} {}.{};", operation, keyspace, table_name);
+                    let query = format!("TRUNCATE {}.{};", keyspace, table_name);
                     println!(" > Truncating table: {}", table_name);
                     session.query(query, []).await?;
                 } else {

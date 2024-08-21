@@ -1,8 +1,8 @@
 [package]
 name = "scylladb-dev-toolkit"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
-description = "Developer Toolkit for ScyllaDB Rust Driver."
+description = "Developer Toolkit for ScyllaDB."
 repository = "https://github.com/DanielHe4rt/scylladb-dev-toolkit"
 keywords = ["database", "scylla", "cql", "toolkit"]
 categories = ["database"]

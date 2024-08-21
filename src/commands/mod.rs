@@ -4,6 +4,7 @@ use clap::{Args, Subcommand};
 
 pub mod keyspace_command;
 pub mod setup_multi_dc_command;
+pub mod table_actions_command;
 
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Args)]
 pub struct ConnectionConfig {
@@ -57,6 +58,19 @@ pub enum Commands {
         #[arg(short, long, default_value = "mykeyspace")]
         keyspace: String,
     },
+    TableActions {
+        #[command(flatten)]
+        connection: ConnectionConfig,
+
+        #[arg(short, long, default_value = "mykeyspace")]
+        keyspace: String,
+
+        #[arg(short, long)]
+        action: Option<u8>,
+
+        #[arg(short, long)]
+        suffix: Option<String>,
+    }
 
 }
 
@@ -65,6 +79,7 @@ impl fmt::Display for Commands {
         match self {
             Commands::Keyspace { .. } => write!(f, "New Keyspace"),
             Commands::MultiDC { .. } => { write!(f, "Multi DC Setup") }
+            Commands::TableActions { .. } => {write!(f, "Table Action")}
         }
     }
 }

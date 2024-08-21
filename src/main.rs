@@ -2,6 +2,7 @@ use clap::Parser;
 use colored::Colorize;
 
 use crate::commands::{Commands, keyspace_command, setup_multi_dc_command};
+use crate::commands::table_actions_command;
 
 mod connection;
 mod commands;
@@ -16,7 +17,7 @@ pub struct Args {
 
 
 #[tokio::main]
-async fn main() {
+async fn main() -> anyhow::Result<()> {
     welcome();
     let args = Args::parse();
 
@@ -31,10 +32,17 @@ async fn main() {
             println!("{} {}", "Action: ".cyan(), "Multi DC Setup");
             setup_multi_dc_command::handle(connection, keyspace, dcs, replication_factor).await;
         },
+        Some(Commands::TableActions { connection, keyspace, suffix, action }) => {
+            let connection = connection::setup_connection(&connection).await;
+            println!("{} {}", "Action: ".cyan(), "Table Actions");
+            table_actions_command::handle(connection, keyspace, action, suffix).await?;
+        },
         _ => {
             println!("{}", "No command provided".red());
         }
     }
+
+    Ok(())
 }
 
 fn welcome() {
